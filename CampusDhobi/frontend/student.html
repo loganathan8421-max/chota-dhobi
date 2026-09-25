@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dashboard - Chota Dhobi</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body class="dashboard-page">
+
+
+<header class="topbar">
+
+    <div class="topbar-brand">
+
+        <div class="brand-small">
+            🧺
+        </div>
+
+        <div>
+            <strong>Chota Dhobi</strong>
+            <small>Student Portal</small>
+        </div>
+
+    </div>
+
+
+    <div class="topbar-actions">
+
+        <button
+            class="icon-btn"
+            onclick="loadNotifications()">
+
+            🔔
+
+            <span
+                id="notificationCount"
+                class="notification-badge">
+                0
+            </span>
+
+        </button>
+
+
+        <button
+            class="logout-btn"
+            onclick="logoutStudent()">
+
+            Logout
+
+        </button>
+
+    </div>
+
+</header>
+
+
+<main class="dashboard-container">
+
+
+<section class="welcome-section">
+
+    <div>
+
+        <span class="eyebrow">
+            STUDENT DASHBOARD
+        </span>
+
+        <h1>
+            Hello,
+            <span id="studentName">
+                Student
+            </span>
+            👋
+        </h1>
+
+        <p>
+            Manage your laundry from your hostel room.
+        </p>
+
+    </div>
+
+
+    <div class="student-profile-mini">
+
+        <div class="avatar">
+            👨‍🎓
+        </div>
+
+        <div>
+
+            <strong id="profileRegister">
+                -
+            </strong>
+
+            <small id="profileHostel">
+                -
+            </small>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section
+    id="bookingBanner"
+    class="booking-banner">
+
+    <div class="booking-icon">
+        ⏰
+    </div>
+
+    <div>
+
+        <strong id="bookingTitle">
+            Checking booking time...
+        </strong>
+
+        <p id="bookingMessage">
+            Please wait...
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-icon purple">
+            🧺
+        </div>
+
+        <div>
+
+            <span>Total Orders</span>
+
+            <strong id="totalOrders">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon blue">
+            🔄
+        </div>
+
+        <div>
+
+            <span>Active</span>
+
+            <strong id="activeOrders">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon green">
+            ✅
+        </div>
+
+        <div>
+
+            <span>Delivered</span>
+
+            <strong id="deliveredOrders">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon orange">
+            ⭐
+        </div>
+
+        <div>
+
+            <span>Ratings</span>
+
+            <strong id="ratingCount">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<div class="dashboard-grid">
+
+
+<section class="dashboard-card booking-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <span class="eyebrow">
+                NEW ORDER
+            </span>
+
+            <h2>
+                Book Your Laundry
+            </h2>
+
+        </div>
+
+        <span class="card-icon">
+            🧺
+        </span>
+
+    </div>
+
+
+    <div
+        id="orderMessage"
+        class="message-box"
+        style="display:none">
+    </div>
+
+
+    <div class="bag-input-section">
+
+        <label>
+            Bag Number
+            <span class="required">*</span>
+        </label>
+
+        <input
+            id="bagNumber"
+            class="bag-input"
+            type="text"
+            maxlength="4"
+            inputmode="numeric"
+            placeholder="0000">
+
+        <small>
+            Enter exactly 4 digits.
+        </small>
+
+    </div>
+
+
+    <h3 class="sub-heading">
+        Select Clothes
+    </h3>
+
+
+    <div class="clothes-grid">
+
+
+        <div class="cloth-item">
+
+            <div class="cloth-icon">
+                👕
+            </div>
+
+            <div class="cloth-info">
+
+                <strong>Shirt</strong>
+
+                <small>₹20 ironing</small>
+
+            </div>
+
+            <div class="quantity">
+
+                <button
+                    onclick="changeQuantity('shirt', -1)">
+                    −
+                </button>
+
+                <span id="shirt">
+                    0
+                </span>
+
+                <button
+                    onclick="changeQuantity('shirt', 1)">
+                    +
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="cloth-item">
+
+            <div class="cloth-icon">
+                👖
+            </div>
+
+            <div class="cloth-info">
+
+                <strong>Pant</strong>
+
+                <small>₹20 ironing</small>
+
+            </div>
+
+            <div class="quantity">
+
+                <button
+                    onclick="changeQuantity('pant', -1)">
+                    −
+                </button>
+
+                <span id="pant">
+                    0
+                </span>
+
+                <button
+                    onclick="changeQuantity('pant', 1)">
+                    +
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="cloth-item">
+
+            <div class="cloth-icon">
+                👕
+            </div>
+
+            <div class="cloth-info">
+
+                <strong>T-Shirt</strong>
+
+                <small>₹20 ironing</small>
+
+            </div>
+
+            <div class="quantity">
+
+                <button
+                    onclick="changeQuantity('tshirt', -1)">
+                    −
+                </button>
+
+                <span id="tshirt">
+                    0
+                </span>
+
+                <button
+                    onclick="changeQuantity('tshirt', 1)">
+                    +
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="cloth-item">
+
+            <div class="cloth-icon">
+                🩳
+            </div>
+
+            <div class="cloth-info">
+
+                <strong>Shorts</strong>
+
+                <small>₹20 ironing</small>
+
+            </div>
+
+            <div class="quantity">
+
+                <button
+                    onclick="changeQuantity('shorts', -1)">
+                    −
+                </button>
+
+                <span id="shorts">
+                    0
+                </span>
+
+                <button
+                    onclick="changeQuantity('shorts', 1)">
+                    +
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="cloth-item">
+
+            <div class="cloth-icon">
+                🧦
+            </div>
+
+            <div class="cloth-info">
+
+                <strong>Socks</strong>
+
+                <small>₹20 ironing</small>
+
+            </div>
+
+            <div class="quantity">
+
+                <button
+                    onclick="changeQuantity('socks', -1)">
+                    −
+                </button>
+
+                <span id="socks">
+                    0
+                </span>
+
+                <button
+                    onclick="changeQuantity('socks', 1)">
+                    +
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="cloth-item">
+
+            <div class="cloth-icon">
+                🧻
+            </div>
+
+            <div class="cloth-info">
+
+                <strong>Towel</strong>
+
+                <small>₹20 ironing</small>
+
+            </div>
+
+            <div class="quantity">
+
+                <button
+                    onclick="changeQuantity('towel', -1)">
+                    −
+                </button>
+
+                <span id="towel">
+                    0
+                </span>
+
+                <button
+                    onclick="changeQuantity('towel', 1)">
+                    +
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="cloth-item">
+
+            <div class="cloth-icon">
+                🛏️
+            </div>
+
+            <div class="cloth-info">
+
+                <strong>Bedsheet</strong>
+
+                <small>₹20 ironing</small>
+
+            </div>
+
+            <div class="quantity">
+
+                <button
+                    onclick="changeQuantity('bedsheet', -1)">
+                    −
+                </button>
+
+                <span id="bedsheet">
+                    0
+                </span>
+
+                <button
+                    onclick="changeQuantity('bedsheet', 1)">
+                    +
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <h3 class="sub-heading">
+        Select Service
+    </h3>
+
+
+    <div class="service-options">
+
+        <label class="service-option">
+
+            <input
+                type="radio"
+                name="service"
+                value="washing"
+                checked>
+
+            <div>
+
+                <strong>Washing</strong>
+
+                <span>FREE</span>
+
+            </div>
+
+        </label>
+
+
+        <label class="service-option">
+
+            <input
+                type="radio"
+                name="service"
+                value="ironing">
+
+            <div>
+
+                <strong>Ironing</strong>
+
+                <span>₹20 / cloth</span>
+
+            </div>
+
+        </label>
+
+
+        <label class="service-option">
+
+            <input
+                type="radio"
+                name="service"
+                value="both">
+
+            <div>
+
+                <strong>Wash + Iron</strong>
+
+                <span>₹20 / cloth</span>
+
+            </div>
+
+        </label>
+
+    </div>
+
+
+    <div class="order-total">
+
+        <div>
+
+            <span>Total Clothes</span>
+
+            <strong id="totalClothes">
+                0
+            </strong>
+
+        </div>
+
+        <div>
+
+            <span>Total Amount</span>
+
+            <strong>
+                ₹<span id="totalAmount">0</span>
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <button
+        id="createOrderButton"
+        class="btn btn-primary full-btn"
+        onclick="createOrder()">
+
+        Generate Laundry Code
+
+    </button>
+
+</section>
+
+
+<section class="dashboard-side">
+
+
+<div class="dashboard-card code-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <span class="eyebrow">
+                VERIFICATION
+            </span>
+
+            <h2>
+                Your Laundry Code
+            </h2>
+
+        </div>
+
+        <span class="card-icon">
+            🔢
+        </span>
+
+    </div>
+
+
+    <div
+        id="codeEmpty"
+        class="empty-state">
+
+        <div>
+            🔐
+        </div>
+
+        <p>
+            Your verification code will appear here
+            after creating an order.
+        </p>
+
+    </div>
+
+
+    <div
+        id="codeResult"
+        style="display:none">
+
+        <p class="code-label">
+            Show this code at the laundry
+        </p>
+
+        <div
+            id="verificationCode"
+            class="verification-code">
+            000000
+        </div>
+
+        <div class="code-details">
+
+            <div>
+                <span>Bag</span>
+                <strong id="codeBag">
+                    ----
+                </strong>
+            </div>
+
+            <div>
+                <span>Status</span>
+                <strong id="codeStatus">
+                    Waiting
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="dashboard-card notifications-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <span class="eyebrow">
+                UPDATES
+            </span>
+
+            <h2>
+                Notifications
+            </h2>
+
+        </div>
+
+        <span class="card-icon">
+            🔔
+        </span>
+
+    </div>
+
+
+    <div id="notificationsList">
+
+        <div class="empty-state">
+
+            <div>
+                🔔
+            </div>
+
+            <p>
+                No notifications yet.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<section class="dashboard-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <span class="eyebrow">
+                HISTORY
+            </span>
+
+            <h2>
+                My Laundry Orders
+            </h2>
+
+        </div>
+
+        <button
+            class="small-btn"
+            onclick="loadOrders()">
+
+            Refresh
+
+        </button>
+
+    </div>
+
+
+    <div
+        id="ordersList"
+        class="orders-list">
+
+        <div class="empty-state">
+
+            <div>
+                🧺
+            </div>
+
+            <p>
+                No laundry orders yet.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<script src="student.js"></script>
+
+</body>
+</html>

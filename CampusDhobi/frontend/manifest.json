@@ -1,0 +1,10 @@
+{
+    "name": "CampusDhobi",
+    "short_name": "CampusDhobi",
+    "description": "Smart College Laundry Management System",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#f4f7fb",
+    "theme_color": "#2563eb",
+    "orientation": "portrait"
+}

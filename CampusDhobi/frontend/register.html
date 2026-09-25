@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account - Chota Dhobi</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body class="auth-page">
+
+<div class="register-wrapper">
+
+    <div class="register-header">
+
+        <button
+            class="back-button"
+            onclick="location.href='index.html'">
+            ← Back
+        </button>
+
+        <div class="register-brand">
+            🧺 Chota Dhobi
+        </div>
+
+        <h1>Create Student Account</h1>
+
+        <p>
+            Enter your details to create your laundry account.
+        </p>
+
+    </div>
+
+
+    <div
+        id="messageBox"
+        class="message-box"
+        style="display:none">
+    </div>
+
+
+    <form id="registerForm" class="form-card">
+
+        <div class="form-section-title">
+            👤 Personal Information
+        </div>
+
+
+        <div class="form-grid">
+
+            <div class="input-group">
+
+                <label>
+                    Register Number
+                </label>
+
+                <input
+                    id="registerNo"
+                    type="text"
+                    placeholder="23AD001"
+                    required>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Full Name
+                </label>
+
+                <input
+                    id="name"
+                    type="text"
+                    placeholder="Rahul Kumar"
+                    required>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Date of Birth
+                </label>
+
+                <input
+                    id="dob"
+                    type="text"
+                    placeholder="DD/MM/YYYY"
+                    maxlength="10"
+                    required>
+
+                <small>
+                    Example: 15/08/2005
+                </small>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Phone Number
+                </label>
+
+                <input
+                    id="phone"
+                    type="tel"
+                    maxlength="10"
+                    inputmode="numeric"
+                    placeholder="9876543210"
+                    required>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Gender
+                </label>
+
+                <select id="gender" required>
+
+                    <option value="">
+                        Select Gender
+                    </option>
+
+                    <option value="male">
+                        Male
+                    </option>
+
+                    <option value="female">
+                        Female
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Hostel
+                </label>
+
+                <select id="hostel" required>
+
+                    <option value="">
+                        Select gender first
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Room Number
+                </label>
+
+                <input
+                    id="roomNo"
+                    type="text"
+                    placeholder="101"
+                    required>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-section-title">
+            🔐 Your Login Password
+        </div>
+
+
+        <div class="password-preview-card">
+
+            <div>
+
+                <strong>
+                    Generated Password
+                </strong>
+
+                <p>
+                    Password format:
+                    Name@BirthYear
+                </p>
+
+            </div>
+
+
+            <div class="password-box">
+
+                <input
+                    type="password"
+                    id="passwordPreview"
+                    readonly
+                    placeholder="Enter name and DOB">
+
+                <button
+                    type="button"
+                    class="eye-button"
+                    id="previewEye">
+                    👁
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="btn btn-primary full-btn"
+            id="registerButton">
+
+            Create Account
+
+        </button>
+
+
+        <div class="auth-footer">
+
+            <p>
+                Already have an account?
+            </p>
+
+            <button
+                type="button"
+                class="text-button"
+                onclick="location.href='login.html'">
+
+                Login
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<script>
+
+const API_URL =
+    "http://127.0.0.1:8000";
+
+
+const gender =
+    document.getElementById("gender");
+
+const hostel =
+    document.getElementById("hostel");
+
+const nameInput =
+    document.getElementById("name");
+
+const dobInput =
+    document.getElementById("dob");
+
+const passwordPreview =
+    document.getElementById(
+        "passwordPreview"
+    );
+
+const previewEye =
+    document.getElementById("previewEye");
+
+const messageBox =
+    document.getElementById(
+        "messageBox"
+    );
+
+
+const maleHostels = [
+    "Old Hostel",
+    "9 Storey Hostel",
+    "Titanic Hostel",
+    "Butterfly Hostel"
+];
+
+
+const femaleHostels = [
+    "H1 Hostel",
+    "H2 Hostel",
+    "H3 Hostel",
+    "H4 Hostel"
+];
+
+
+gender.addEventListener(
+    "change",
+    () => {
+
+        hostel.innerHTML = "";
+
+        const first =
+            document.createElement("option");
+
+        first.value = "";
+
+        first.textContent =
+            "Select Hostel";
+
+        hostel.appendChild(first);
+
+
+        let list = [];
+
+        if (gender.value === "male") {
+            list = maleHostels;
+        }
+
+        if (gender.value === "female") {
+            list = femaleHostels;
+        }
+
+
+        list.forEach(
+            hostelName => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    hostelName;
+
+                option.textContent =
+                    hostelName;
+
+                hostel.appendChild(option);
+
+            }
+        );
+
+    }
+);
+
+
+function updatePasswordPreview() {
+
+    const name =
+        nameInput.value.trim();
+
+    const dob =
+        dobInput.value.trim();
+
+
+    if (!name || !dob) {
+
+        passwordPreview.value = "";
+
+        return;
+
+    }
+
+
+    const parts =
+        name.split(/\s+/);
+
+    const firstName =
+        parts[0];
+
+    const year =
+        dob.length === 10
+            ? dob.substring(6)
+            : "";
+
+
+    if (/^\d{4}$/.test(year)) {
+
+        passwordPreview.value =
+            `${firstName}@${year}`;
+
+    } else {
+
+        passwordPreview.value = "";
+
+    }
+
+}
+
+
+nameInput.addEventListener(
+    "input",
+    updatePasswordPreview
+);
+
+dobInput.addEventListener(
+    "input",
+    updatePasswordPreview
+);
+
+
+previewEye.addEventListener(
+    "click",
+    () => {
+
+        if (
+            passwordPreview.type ===
+            "password"
+        ) {
+
+            passwordPreview.type =
+                "text";
+
+            previewEye.textContent =
+                "🙈";
+
+        } else {
+
+            passwordPreview.type =
+                "password";
+
+            previewEye.textContent =
+                "👁";
+
+        }
+
+    }
+);
+
+
+function showMessage(
+    message,
+    type
+) {
+
+    messageBox.textContent =
+        message;
+
+    messageBox.style.display =
+        "block";
+
+    messageBox.className =
+        "message-box " +
+        (type === "error"
+            ? "error-message"
+            : "success-message");
+}
+
+
+document
+    .getElementById("registerForm")
+    .addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            const registerButton =
+                document.getElementById(
+                    "registerButton"
+                );
+
+
+            const data = {
+
+                register_no:
+                    document
+                        .getElementById(
+                            "registerNo"
+                        )
+                        .value
+                        .trim(),
+
+                name:
+                    nameInput.value.trim(),
+
+                date_of_birth:
+                    dobInput.value.trim(),
+
+                gender:
+                    gender.value,
+
+                hostel:
+                    hostel.value,
+
+                room_no:
+                    document
+                        .getElementById(
+                            "roomNo"
+                        )
+                        .value
+                        .trim(),
+
+                phone:
+                    document
+                        .getElementById(
+                            "phone"
+                        )
+                        .value
+                        .trim()
+
+            };
+
+
+            if (
+                !/^\d{2}\/\d{2}\/\d{4}$/
+                    .test(
+                        data.date_of_birth
+                    )
+            ) {
+
+                showMessage(
+                    "DOB must be DD/MM/YYYY.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !/^[6-9]\d{9}$/
+                    .test(data.phone)
+            ) {
+
+                showMessage(
+                    "Enter a valid 10-digit phone number.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !/^\d{4}$/
+                    .test(data.room_no) &&
+                data.room_no.length === 0
+            ) {
+
+                showMessage(
+                    "Enter your room number.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            registerButton.disabled =
+                true;
+
+            registerButton.textContent =
+                "Creating Account...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_URL}/api/student/register`,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify(data)
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result.detail ||
+                        "Registration failed."
+                    );
+
+                }
+
+
+                showMessage(
+                    `Account created successfully! Your password is ${result.password}`,
+                    "success"
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        location.href =
+                            "login.html";
+
+                    },
+                    2500
+                );
+
+
+            } catch (error) {
+
+                showMessage(
+                    error.message,
+                    "error"
+                );
+
+                registerButton.disabled =
+                    false;
+
+                registerButton.textContent =
+                    "Create Account";
+
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

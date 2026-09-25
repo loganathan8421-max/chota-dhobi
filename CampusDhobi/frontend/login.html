@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Student Login - Chota Dhobi</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body class="auth-page">
+
+<div class="auth-layout">
+
+    <div class="auth-brand-panel">
+
+        <div class="auth-logo">
+            🧺
+        </div>
+
+        <h1>Chota Dhobi</h1>
+
+        <p>
+            Your laundry. Your room.
+            Your schedule.
+        </p>
+
+        <div class="auth-info">
+
+            <div>
+                <span>06:00 AM</span>
+                <small>Booking opens</small>
+            </div>
+
+            <div>
+                <span>08:30 AM</span>
+                <small>Booking closes</small>
+            </div>
+
+            <div>
+                <span>04:00 PM</span>
+                <small>Delivery starts</small>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="auth-card">
+
+        <button
+            class="back-button"
+            onclick="location.href='index.html'">
+            ← Back
+        </button>
+
+        <div class="auth-heading">
+
+            <span class="mini-icon">
+                👨‍🎓
+            </span>
+
+            <h2>Student Login</h2>
+
+            <p>
+                Login to manage your laundry.
+            </p>
+
+        </div>
+
+
+        <div
+            id="messageBox"
+            class="message-box"
+            style="display:none">
+        </div>
+
+
+        <form id="loginForm">
+
+            <label>
+                Register Number
+            </label>
+
+            <input
+                type="text"
+                id="registerNo"
+                placeholder="Example: 23AD001"
+                required>
+
+
+            <label>
+                Password
+            </label>
+
+            <div class="password-box">
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Name@BirthYear"
+                    required>
+
+                <button
+                    type="button"
+                    class="eye-button"
+                    id="togglePassword">
+                    👁
+                </button>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="btn btn-primary full-btn"
+                id="loginButton">
+
+                Login
+
+            </button>
+
+        </form>
+
+
+        <div class="auth-footer">
+
+            <p>
+                Don't have an account?
+            </p>
+
+            <button
+                class="text-button"
+                onclick="location.href='register.html'">
+
+                Create Student Account
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="app.js"></script>
+
+<script>
+
+const API_URL = "http://127.0.0.1:8000";
+
+const loginForm =
+    document.getElementById("loginForm");
+
+const passwordInput =
+    document.getElementById("password");
+
+const togglePassword =
+    document.getElementById("togglePassword");
+
+const messageBox =
+    document.getElementById("messageBox");
+
+
+togglePassword.addEventListener(
+    "click",
+    () => {
+
+        if (passwordInput.type === "password") {
+
+            passwordInput.type = "text";
+
+            togglePassword.textContent = "🙈";
+
+        } else {
+
+            passwordInput.type = "password";
+
+            togglePassword.textContent = "👁";
+
+        }
+
+    }
+);
+
+
+function showLoginMessage(message, type) {
+
+    messageBox.textContent = message;
+
+    messageBox.style.display = "block";
+
+    messageBox.className =
+        "message-box " +
+        (type === "error"
+            ? "error-message"
+            : "success-message");
+}
+
+
+loginForm.addEventListener(
+    "submit",
+    async (event) => {
+
+        event.preventDefault();
+
+        const registerNo =
+            document.getElementById(
+                "registerNo"
+            ).value.trim();
+
+        const password =
+            passwordInput.value.trim();
+
+
+        const loginButton =
+            document.getElementById(
+                "loginButton"
+            );
+
+        loginButton.disabled = true;
+
+        loginButton.textContent =
+            "Logging in...";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_URL}/api/student/login`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            register_no:
+                                registerNo,
+
+                            password:
+                                password
+                        })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.detail ||
+                    "Login failed."
+                );
+
+            }
+
+
+            localStorage.setItem(
+                "student",
+                JSON.stringify(data.student)
+            );
+
+
+            showLoginMessage(
+                "Login successful! Opening dashboard...",
+                "success"
+            );
+
+
+            setTimeout(() => {
+
+                location.href =
+                    "student.html";
+
+            }, 700);
+
+
+        } catch (error) {
+
+            showLoginMessage(
+                error.message,
+                "error"
+            );
+
+            loginButton.disabled = false;
+
+            loginButton.textContent =
+                "Login";
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>

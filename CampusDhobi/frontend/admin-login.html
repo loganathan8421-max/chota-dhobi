@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Login - Chota Dhobi</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body class="auth-page">
+
+<div class="auth-layout">
+
+    <div class="auth-brand-panel admin-panel">
+
+        <div class="auth-logo">
+            👨‍💼
+        </div>
+
+        <h1>Admin Portal</h1>
+
+        <p>
+            Manage student laundry orders
+            from one dashboard.
+        </p>
+
+        <div class="admin-feature-list">
+
+            <div>✓ Verify laundry codes</div>
+
+            <div>✓ Manage washing status</div>
+
+            <div>✓ View collections</div>
+
+            <div>✓ Manage ratings</div>
+
+        </div>
+
+    </div>
+
+
+    <div class="auth-card">
+
+        <button
+            class="back-button"
+            onclick="location.href='index.html'">
+            ← Back
+        </button>
+
+        <div class="auth-heading">
+
+            <span class="mini-icon">
+                🔐
+            </span>
+
+            <h2>Admin Login</h2>
+
+            <p>
+                Enter your administrator credentials.
+            </p>
+
+        </div>
+
+
+        <div
+            id="messageBox"
+            class="message-box"
+            style="display:none">
+        </div>
+
+
+        <form id="adminLoginForm">
+
+            <label>
+                Username
+            </label>
+
+            <input
+                id="username"
+                type="text"
+                placeholder="admin"
+                required>
+
+
+            <label>
+                Password
+            </label>
+
+            <div class="password-box">
+
+                <input
+                    id="password"
+                    type="password"
+                    placeholder="Admin@123"
+                    required>
+
+                <button
+                    type="button"
+                    class="eye-button"
+                    id="eye">
+                    👁
+                </button>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="btn btn-primary full-btn">
+
+                Login to Admin Portal
+
+            </button>
+
+        </form>
+
+
+        <div class="demo-credentials">
+
+            <strong>Demo credentials</strong>
+
+            <p>
+                Username: <b>admin</b>
+            </p>
+
+            <p>
+                Password: <b>Admin@123</b>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const API_URL =
+    "http://127.0.0.1:8000";
+
+
+const form =
+    document.getElementById(
+        "adminLoginForm"
+    );
+
+const password =
+    document.getElementById("password");
+
+const eye =
+    document.getElementById("eye");
+
+const messageBox =
+    document.getElementById(
+        "messageBox"
+    );
+
+
+eye.addEventListener(
+    "click",
+    () => {
+
+        if (password.type === "password") {
+
+            password.type = "text";
+
+            eye.textContent = "🙈";
+
+        } else {
+
+            password.type = "password";
+
+            eye.textContent = "👁";
+
+        }
+
+    }
+);
+
+
+form.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_URL}/api/admin/login`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                username:
+                                    document
+                                        .getElementById(
+                                            "username"
+                                        )
+                                        .value
+                                        .trim(),
+
+                                password:
+                                    password.value
+
+                            })
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    result.detail ||
+                    "Login failed."
+                );
+
+            }
+
+
+            localStorage.setItem(
+                "adminLoggedIn",
+                "true"
+            );
+
+
+            messageBox.textContent =
+                "Login successful.";
+
+            messageBox.style.display =
+                "block";
+
+            messageBox.className =
+                "message-box success-message";
+
+
+            setTimeout(
+                () => {
+
+                    location.href =
+                        "admin.html";
+
+                },
+                700
+            );
+
+
+        } catch (error) {
+
+            messageBox.textContent =
+                error.message;
+
+            messageBox.style.display =
+                "block";
+
+            messageBox.className =
+                "message-box error-message";
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>

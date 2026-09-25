@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard - Chota Dhobi</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body class="dashboard-page">
+
+
+<header class="topbar">
+
+    <div class="topbar-brand">
+
+        <div class="brand-small">
+            👨‍💼
+        </div>
+
+        <div>
+
+            <strong>Chota Dhobi</strong>
+
+            <small>
+                Admin Portal
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <div class="topbar-actions">
+
+        <span class="admin-status">
+            ● Admin Online
+        </span>
+
+        <button
+            class="logout-btn"
+            onclick="logoutAdmin()">
+
+            Logout
+
+        </button>
+
+    </div>
+
+</header>
+
+
+<main class="dashboard-container">
+
+
+<section class="welcome-section">
+
+    <div>
+
+        <span class="eyebrow">
+            ADMIN DASHBOARD
+        </span>
+
+        <h1>
+            Laundry Management
+        </h1>
+
+        <p>
+            Manage students, orders and laundry status.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-icon purple">
+            👨‍🎓
+        </div>
+
+        <div>
+
+            <span>Students</span>
+
+            <strong id="studentCount">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon orange">
+            ⏳
+        </div>
+
+        <div>
+
+            <span>Waiting</span>
+
+            <strong id="waitingCount">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon blue">
+            🧺
+        </div>
+
+        <div>
+
+            <span>Washing</span>
+
+            <strong id="washingCount">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon green">
+            ✅
+        </div>
+
+        <div>
+
+            <span>Ready</span>
+
+            <strong id="readyCount">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<div class="dashboard-grid">
+
+
+<section class="dashboard-card verify-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <span class="eyebrow">
+                ORDER VERIFICATION
+            </span>
+
+            <h2>
+                Verify Laundry Code
+            </h2>
+
+        </div>
+
+        <span class="card-icon">
+            🔢
+        </span>
+
+    </div>
+
+
+    <div class="verify-input">
+
+        <input
+            id="verificationCode"
+            type="text"
+            maxlength="6"
+            inputmode="numeric"
+            placeholder="Enter 6-digit code">
+
+        <button
+            class="btn btn-primary"
+            onclick="verifyCode()">
+
+            Verify
+
+        </button>
+
+    </div>
+
+
+    <div
+        id="verifyMessage"
+        class="message-box"
+        style="display:none">
+    </div>
+
+
+    <div
+        id="verifiedOrder"
+        style="display:none">
+
+        <div class="verified-header">
+
+            <div>
+
+                <span>
+                    VERIFIED ORDER
+                </span>
+
+                <h3 id="verifiedStudent">
+                    Student
+                </h3>
+
+            </div>
+
+            <span
+                id="verifiedStatus"
+                class="status-badge waiting">
+                Waiting
+            </span>
+
+        </div>
+
+
+        <div class="student-details-grid">
+
+            <div>
+                <span>Register No</span>
+                <strong id="verifiedRegister">-</strong>
+            </div>
+
+            <div>
+                <span>Phone</span>
+                <strong id="verifiedPhone">-</strong>
+            </div>
+
+            <div>
+                <span>Hostel</span>
+                <strong id="verifiedHostel">-</strong>
+            </div>
+
+            <div>
+                <span>Room</span>
+                <strong id="verifiedRoom">-</strong>
+            </div>
+
+            <div>
+                <span>Bag Number</span>
+                <strong id="verifiedBag">-</strong>
+            </div>
+
+            <div>
+                <span>Total Clothes</span>
+                <strong id="verifiedTotal">-</strong>
+            </div>
+
+        </div>
+
+
+        <div class="verified-clothes">
+
+            <h4>Clothes</h4>
+
+            <p id="verifiedClothes">
+                -
+            </p>
+
+        </div>
+
+
+        <div class="verified-actions">
+
+            <button
+                id="collectButton"
+                class="action-btn orange"
+                onclick="updateStatus('collected')">
+
+                🧺 Collect
+
+            </button>
+
+
+            <button
+                id="washingButton"
+                class="action-btn blue"
+                onclick="updateStatus('washing')">
+
+                🫧 Start Washing
+
+            </button>
+
+
+            <button
+                id="readyButton"
+                class="action-btn green"
+                onclick="updateStatus('ready')">
+
+                ✅ Mark Ready
+
+            </button>
+
+
+            <button
+                id="deliveredButton"
+                class="action-btn purple"
+                onclick="updateStatus('delivered')">
+
+                📦 Delivered
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="dashboard-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <span class="eyebrow">
+                QUICK INFO
+            </span>
+
+            <h2>
+                Laundry Timings
+            </h2>
+
+        </div>
+
+        <span class="card-icon">
+            ⏰
+        </span>
+
+    </div>
+
+
+    <div class="timing-card">
+
+        <div>
+
+            <span>
+                Booking
+            </span>
+
+            <strong>
+                06:00 AM – 08:30 AM
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Delivery
+            </span>
+
+            <strong>
+                04:00 PM – 07:00 PM
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="admin-note">
+
+        <strong>
+            💡 Reminder
+        </strong>
+
+        <p>
+            Verify the student's code before
+            collecting the laundry bag.
+        </p>
+
+    </div>
+
+</section>
+
+</div>
+
+
+<div class="dashboard-grid">
+
+
+<section class="dashboard-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <span class="eyebrow">
+                TODAY
+            </span>
+
+            <h2>
+                Today's Collection
+            </h2>
+
+        </div>
+
+        <button
+            class="small-btn"
+            onclick="loadTodayCollection()">
+
+            Refresh
+
+        </button>
+
+    </div>
+
+
+    <div
+        id="todayCollection"
+        class="admin-order-list">
+
+        Loading...
+
+    </div>
+
+</section>
+
+
+<section class="dashboard-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <span class="eyebrow">
+                TOMORROW
+            </span>
+
+            <h2>
+                Tomorrow's Orders
+            </h2>
+
+        </div>
+
+        <button
+            class="small-btn"
+            onclick="loadTomorrowOrders()">
+
+            Refresh
+
+        </button>
+
+    </div>
+
+
+    <div
+        id="tomorrowOrders"
+        class="admin-order-list">
+
+        Loading...
+
+    </div>
+
+</section>
+
+</div>
+
+
+<section class="dashboard-card">
+
+    <div class="card-header">
+
+        <div>
+
+            <span class="eyebrow">
+                CUSTOMER FEEDBACK
+            </span>
+
+            <h2>
+                Ratings
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="ratingsList"
+        class="ratings-admin-list">
+
+        Loading...
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<script src="admin.js"></script>
+
+</body>
+</html>
